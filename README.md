@@ -56,35 +56,35 @@ $ jupyter lab --ip 0.0.0.0 --port 8886 --allow-root
 ```
 $ bash run_knn.sh
 
-    #!/bin/bash
-    data_dir=data/         ## dir where data are
-    train_valid_file=Data_train_validation_2019-1126.xlsx   ## file of training set and validation set
-    test_file=Data_test_2019-1126.xlsx                      ## file of test set
-    feature_in='A1 A2 A3 A4 A5 A6 A7 A8 A9 A10 A11 A12 A13 A14 A15 A16 A17'    ## features used for knn model
-    output_col='Type'      ## output for knn model
-    is_shuffle=True        ## whether train_valid_file is shuffle 
-    k_fold=1               ## 1 means no k fold validaiton. >1 means k fold validation. 
-    n_neighbors=3          ## knn param.
-    weights=uniform        ## knn param.
-    power_param=2          ## knn param.
-    output_dir=output/${k_fold}-fold_n-${n_neighbors}_${weights}_p-${power_param}  ## dir where output data and results are 
+#!/bin/bash
+data_dir=data/         ## dir where data are
+train_valid_file=Data_train_validation_2019-1126.xlsx   ## file of training set and validation set
+test_file=Data_test_2019-1126.xlsx                      ## file of test set
+feature_in='A1 A2 A3 A4 A5 A6 A7 A8 A9 A10 A11 A12 A13 A14 A15 A16 A17'    ## features used for knn model
+output_col='Type'      ## output for knn model
+is_shuffle=True        ## whether train_valid_file is shuffle 
+k_fold=1               ## 1 means no k fold validaiton. >1 means k fold validation. 
+n_neighbors=3          ## knn param.
+weights=uniform        ## knn param.
+power_param=2          ## knn param.
+output_dir=output/${k_fold}-fold_n-${n_neighbors}_${weights}_p-${power_param}  ## dir where results are 
 
-    python knn.py \                           
-      --data_dir $data_dir \
-      --train_valid_file $train_valid_file \
-      --test_file $test_file \
-      --output_dir $output_dir \
-      --feature_in $feature_in \
-      --output_col $output_col \
-      --is_shuffle $is_shuffle \
-      --k_fold $k_fold \
-      --n_neighbors $n_neighbors \
-      --weights $weights \
-      --power_param $power_param
+python knn.py \                           
+  --data_dir $data_dir \
+  --train_valid_file $train_valid_file \
+  --test_file $test_file \
+  --output_dir $output_dir \
+  --feature_in $feature_in \
+  --output_col $output_col \
+  --is_shuffle $is_shuffle \
+  --k_fold $k_fold \
+  --n_neighbors $n_neighbors \
+  --weights $weights \
+  --power_param $power_param
 ```
 
 ---
-##Run program with grid search
+## Run program with grid search
 ### Grid Search for best hyperparameters of KNN model
 esp. for n_neighbors, weights, power_param
 
