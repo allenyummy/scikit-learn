@@ -53,6 +53,9 @@ $ jupyter lab --ip 0.0.0.0 --port 8886 --allow-root
 
 ---
 ## Run program without grid search
+
+It's enough to directly run the script of `run_knn.sh`, which delivers lot of flags to run with the `knn.py`.
+
 ```
 $ bash run_knn.sh
 
@@ -83,11 +86,19 @@ python knn.py \
   --power_param $power_param
 ```
 
----
-## Run program with grid search
-### Grid Search for best hyperparameters of KNN model
-esp. for n_neighbors, weights, power_param
+Parsing the `knn.py` for details, and `knn.ipynb` is the same code as `knn.py` but jupyter version. More details can be checked in the `knn.ipynb`.
+* Import Library
+* DataReader Class, functions of reading train_valid_file and test_file w/ or w/o k_fold validation.
+* KNN Class, functions of knn model setting, training knn model, evaluating metrics and predicting.
+* Func. of no_k_fold, reponsible for reading data, training knn model, evaluating model, predicting, and reporting results without k fold validation (K=1).
+* Func. of k_fold_validaiton, reponsible for reading data, training knn model, evaluating model, predicting, and reporting results with k fold validation. 
+* Func. of configuration for args, reponsible for recording the args.
+* Func. of configuration for grid_search.ipynb or any programs, reponsible for recording the args.
+* Func. of main, reponsible for taking appropriaate actions from the flags which is set in `run_knn.sh`.
 
-run grid_search.ipynb
+---
+## Run program with grid search with k fold validation
+esp. for n_neighbors, weights, power_param of knn model.
+All details are in `grid_search.ipynb`.
 
 
