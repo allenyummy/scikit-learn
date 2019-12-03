@@ -21,5 +21,5 @@ python svc.py \
   --is_shuffle $is_shuffle \
   --k_fold $k_fold \
   --c $c \
-  --gamma $gamma \
+  --gamma $gamma 
 
