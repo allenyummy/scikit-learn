@@ -4,36 +4,36 @@ This is a demo of multi-class classification using K nearest neighbors (KNN) and
 The released github code can be divided into three parts, such as Docker Environment, KNN code, Grid search code.
 
 ---
-## Build the Environment
+# Build the Environment
 It's easy and convinent to get the entire environment without any efforts on your own. What you need to do is to build up the docker image in the local pc and run the docker image. 
 
-There are two ways to build up the docker image in the local pc. First, by `DockerFile` which is in `env/` dir. Second, by pulling image, called `allenyummy/sklearn-jupyter:19.11`, from docker hub. I highly recommended the second way if you want to skip the process of building up. If you want to check what packages are established, check `env/DockerFile` and `requirements.txt`. 
+There are two ways to build up the docker image in the local pc. First, by `DockerFile` which is in `env/` dir. Second, by pulling image, called `allenyummy/sklearn-jupyter:19.11.2`, from docker hub. I highly recommended the second way if you want to skip the process of building up. If you want to check what packages are established, check `env/DockerFile` and `requirements.txt`. 
 * Method 1: build up docker image via DockerFile in the local dir. It has to enter in the dir where DockerFile is, and run it with custom image name.
 
 ```
 $ cd env/
-$ docker build . -t allenyummy/sklearn-jupyter:19.11
+$ docker build . -t allenyummy/sklearn-jupyter:19.11.2
 ```  
 
 * Method 2: pull the docker image from docker hub, which is highly recommended. 
 
 ```
-$ docker pull allenyummy/sklearn-jupyter:19.11
+$ docker pull allenyummy/sklearn-jupyter:19.11.2
 ```
 
 
-Check image by the command `$ docker images`, and you'll see the custom image name you have build or `allenyummy/sklearn-jupyter:19.11`. If the image doesn't show up, please turn back to re-build the image.
+Check image by the command `$ docker images`, and you'll see the custom image name you have build or `allenyummy/sklearn-jupyter:19.11.2`. If the image doesn't show up, please turn back to re-build the image.
 
 Now, you can run the image, and get the whole word. All you need yo change is the dir `{usr}` you want to mount with the container. If you want to check the flag options, go https://docs.docker.com/engine/reference/run/.
 
 ```
-$ docker run --name sklearn-knn -t -i -p 8886:8886 --rm -v /home/{usr}/:/workspace allenyummy/sklearn-jupyter:19.11
+$ docker run --name sklearn-knn -t -i -p 8886:8886 --rm -v /home/{usr}/:/workspace allenyummy/sklearn-jupyter:19.11.2
 ```
 
 Now, the container is running. Check with `$ docker ps -a`.
 
 ---
-## Git Clone Code and Open Jupyter Notebook
+# Git Clone Code and Open Jupyter Notebook
 Git clone the github code to the dir you mount with, and open jupyter IDE. Jupyter IDE is not necessary for this project.
 
 1. set up jupyter passwd
@@ -52,6 +52,7 @@ $ jupyter lab --ip 0.0.0.0 --port 8886 --allow-root
 3. open jupyter ide by visiting `https://localhost:8886` or `https://ip:8886`.
 
 ---
+# K nearest neighbors (KNN)
 ## Run program without grid search
 
 It's enough to directly run the script of `run_knn.sh`, which delivers lot of flags to run with the `knn.py`.
@@ -60,7 +61,7 @@ It's enough to directly run the script of `run_knn.sh`, which delivers lot of fl
 $ bash run_knn.sh
 
 #!/bin/bash
-data_dir=data/         ## dir where data are
+data_dir=../data/         ## dir where data are
 train_valid_file=Data_train_validation_2019-1126.xlsx   ## file of training set and validation set
 test_file=Data_test_2019-1126.xlsx                      ## file of test set
 feature_in='A1 A2 A3 A4 A5 A6 A7 A8 A9 A10 A11 A12 A13 A14 A15 A16 A17'    ## features used for knn model
@@ -99,6 +100,6 @@ Parsing the `knn.py` for details, and `knn.ipynb` is the same code as `knn.py` b
 ---
 ## Run program with grid search with k fold validation
 esp. for n_neighbors, weights, power_param of knn model.
-All details are in `grid_search.ipynb`.
+All details are in `grid_search.ipynb`. It also supports the plot function by contourf of matplotlib.
 
 
