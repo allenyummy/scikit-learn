@@ -1,4 +1,4 @@
-# **sklearn-jupyter**
+# **scikit-learn-demo**
 This is a demo of multi-class classification using K nearest neighbors (KNN) and support vector classification (SVC) from scikit-learn 0.21.3.
 
 The released github code can be divided into four parts, such as Docker Environment, Open Jupyter, KNN code, SVC code.
