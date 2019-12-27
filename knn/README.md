@@ -35,13 +35,12 @@ python knn.py \
 
 Parsing the `knn.py` for details, and `knn.ipynb` is the same code as `knn.py` but jupyter version. More details can be checked in the `knn.ipynb`.
 * Import Library
-* DataReader Class, functions of reading train_valid_file and test_file w/ or w/o k_fold validation.
-* KNN Class, functions of knn model setting, training knn model, evaluating metrics and predicting.
-* Func. of no_k_fold, reponsible for reading data, training knn model, evaluating model, predicting, and reporting results without k fold validation (K=1).
-* Func. of k_fold_validaiton, reponsible for reading data, training knn model, evaluating model, predicting, and reporting results with k fold validation. 
-* Func. of configuration for args, reponsible for recording the args.
-* Func. of configuration for grid_search.ipynb or any programs, reponsible for recording the args.
-* Func. of main, reponsible for taking appropriaate actions from the flags which is set in `run_knn.sh`.
+* DataReader Class: functions of reading train_valid_file and test_file w/ or w/o k_fold validation.
+* Model Class: functions of knn model setting, training model, evaluating metrics and predicting.
+* Func. of no_k_fold, reponsible for reading data, training model, evaluating model, predicting, and reporting results without k fold validation (K=1).
+* Func. of k_fold_validaiton, reponsible for reading data, training model, evaluating model, predicting, and reporting results with k fold validation.
+* Func. of configuration for recording experimental setting.
+* Func. of main, reponsible for taking appropriate actions from the flags which is set in `run_knn.sh`.
 
 ---
 ## Run program with grid search with k fold validation
