@@ -48,11 +48,11 @@ class DataReader():
         return test_data, test_x, test_y
 
 class KNN():
-    def __init__(self, n_neighbors, weights, power_param):
+    def __init__(self, n_neighbors, weights, p):
         self.n_neighbors = n_neighbors
         self.weights = weights
-        self.power_param = power_param        
-        self.knn = KNeighborsClassifier(n_neighbors=n_neighbors, weights=weights, p=power_param)
+        self.p = p
+        self.knn = KNeighborsClassifier(n_neighbors=n_neighbors, weights=weights, p=p)
         
     def train(self, data_x, data_y): 
         return self.knn.fit(data_x, data_y) 
@@ -191,23 +191,9 @@ def k_fold_validation(datareader, knn, output_dir):
     with pd.ExcelWriter(output_dir+'/result.xlsx') as writer:           
         result.to_excel(writer, sheet_name='accuracy_report') 
     
-    return result.loc[i+1,'train'], result.loc[i+1,'valid'], result.loc[i+1,'test']
-                  
-def configuration(args):
-    config = {
-        'data_dir': args.data_dir,
-        'train_valid_file': args.train_valid_file,
-        'test_file': args.test_file,
-        'feature_input': args.feature_in,
-        'output_column': args.output_col,
-        'is_shuffle': args.is_shuffle,
-        'k_fold': args.k_fold,  
-        'n_neighbors': args.n_neighbors,
-        'weights': args.weights,
-        'power_param': args.power_param}        
-    return config
+    return result.loc[i+1,'train'], result.loc[i+1,'valid'], result.loc[i+1,'test']                
 
-def configuration_grid_search(datareader, knn):
+def configuration(datareader, knn):
     config = {
         'data_dir': datareader.data_dir,
         'train_valid_file': datareader.train_valid_file,
@@ -215,16 +201,18 @@ def configuration_grid_search(datareader, knn):
         'feature_input': datareader.feature_in,
         'output_column': datareader.output_col,
         'is_shuffle': True,
-        'k_fold': datareader.k_fold,  
+        'k_fold': datareader.k_fold,
         'n_neighbors': knn.n_neighbors,
         'weights': knn.weights,
-        'power_param': knn.power_param}        
+        'p': knn.p}        
+    
     return config
 
 def main():
     #--- parser setting ---#
     parser = argparse.ArgumentParser(description='run sklearn/knn for classification.')
     
+    ## data setting
     parser.add_argument('--data_dir',
                         type=str,
                         required=True,
@@ -259,11 +247,14 @@ def main():
                         required=True,
                         help='shuffle for training set and validation set')
     
+    ## use k fold validation or not
     parser.add_argument('--k_fold',
                         type=int,
                         required=True,
-                        help='k fold validation')
+                        help='k=1 means no k fold validation. k>1 means k fold validation')
     
+    ## knn parameter setting (only set those params. that have to be tuned.)
+    ## other parameters that don't show up will be set as default in Class.
     parser.add_argument('--n_neighbors',
                         type=int,
                         required=True,
@@ -274,7 +265,7 @@ def main():
                         required=True,
                         help='weight function used in prediction. [uniform, distance]')
     
-    parser.add_argument('--power_param',
+    parser.add_argument('--p',
                         type=int,
                         required=True,
                         help='Power parameter for the Minkowski metric.')
@@ -288,11 +279,7 @@ def main():
         raise ValueError('k fold must equal or be greater than 1.')   
     
     if len(args.feature_in) < 1:
-        raise ValueError('len of feature must equal or be greater than 1.')
-    
-    config = configuration(args)
-    with open(args.output_dir+'/config.json', 'w') as fout:
-        json.dump(config, fout, indent = 4)
+        raise ValueError('len of feature must equal or be greater than 1.')        
     
     datareader = DataReader(data_dir = args.data_dir,
                             train_valid_file = args.train_valid_file,                                
@@ -303,12 +290,16 @@ def main():
         
     knn = KNN(n_neighbors = args.n_neighbors,
               weights = args.weights,
-              power_param = args.power_param)
+              p = args.p)
             
     if args.k_fold == 1:                
         no_k_fold(datareader, knn, args.output_dir)    
     elif args.k_fold > 1:
-        k_fold_validation(datareader, knn, args.output_dir)       
+        k_fold_validation(datareader, knn, args.output_dir)     
+        
+    config = configuration(datareader, knn)
+    with open(args.output_dir+'/config.json', 'w') as fout:
+        json.dump(config, fout, indent = 4)
         
 if __name__ == '__main__':    
     main()

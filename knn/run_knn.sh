@@ -8,8 +8,8 @@ is_shuffle=True
 k_fold=1
 weights=distance
 n_neighbors=5
-power_param=1
-output_dir=output_best/${k_fold}-fold_${weights}_n-${n_neighbors}_p-${power_param}
+p=1
+output_dir=output_best/${k_fold}-fold_${weights}_n-${n_neighbors}_p-${p}
 
 python knn.py \
   --data_dir $data_dir \
@@ -22,5 +22,5 @@ python knn.py \
   --k_fold $k_fold \
   --n_neighbors $n_neighbors \
   --weights $weights \
-  --power_param $power_param
+  --p $p
 
