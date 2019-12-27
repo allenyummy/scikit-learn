@@ -52,10 +52,12 @@ $ jupyter lab --ip 0.0.0.0 --port 8886 --allow-root
 3. open jupyter ide by visiting `https://localhost:8886` or `https://ip:8886`.
 
 ---
-# K Nearest Neighbor (KNN)
-Please enter knn directory and check with another `README.md`.
+# Model Implementation
+1. K Nearest Neighbor (KNN)
+2. Support Vector Classification (SVC)
+3. Gaussian Naive Bayes (GaussianNB)
+4. Decision Tree (DT)
+5. Random Forest (RF)
+6. Gradient Boosting (GB)
 
-
----
-# Support Vector Classification (SVC)
-Please enter svc directory and check with another `README.md`.
+Please enter directory and check with `README.md`.
