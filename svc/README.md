@@ -14,11 +14,11 @@ feature_in='A1 A2 A3 A4 A5 A6 A7 A8 A9 A10 A11 A12 A13 A14 A15 A16 A17'    ## fe
 output_col='Type'      ## output for svc model
 is_shuffle=True        ## whether train_valid_file is shuffle 
 k_fold=1               ## 1 means no k fold validaiton. >1 means k fold validation. 
-c=8.0                  ## svc param.
+C=8.0                  ## svc param.
 gamma=0.03125          ## svc param.
 output_dir=output/${k_fold}-fold_n-${n_neighbors}_${weights}_p-${power_param}  ## dir where results are 
 
-output_dir=output_best/${k_fold}-fold_c-${c}_g-${gamma}
+output_dir=output_best/${k_fold}-fold_C-${C}_g-${gamma}
 
 python svc.py \
   --data_dir $data_dir \
@@ -29,19 +29,18 @@ python svc.py \
   --output_col $output_col \
   --is_shuffle $is_shuffle \
   --k_fold $k_fold \
-  --c $c \
+  --C $C \
   --gamma $gamma 
 ```
 
 Parsing the `svc.py` for details.
 * Import Library
-* DataReader Class, functions of reading train_valid_file and test_file w/ or w/o k_fold validation.
-* KNN Class, functions of svc model setting, training svc model, evaluating metrics and predicting.
-* Func. of no_k_fold, reponsible for reading data, training knn model, evaluating model, predicting, and reporting results without k fold validation (K=1).
-* Func. of k_fold_validaiton, reponsible for reading data, training knn model, evaluating model, predicting, and reporting results with k fold validation. 
-* Func. of configuration for args, reponsible for recording the args.
-* Func. of configuration for grid_search.ipynb or any programs, reponsible for recording the args.
-* Func. of main, reponsible for taking appropriaate actions from the flags which is set in `run_svc.sh`.
+* DataReader Class: functions of reading train_valid_file and test_file w/ or w/o k_fold validation.
+* Model Class: functions of model setting, training model, evaluating metrics and predicting.
+* Func. of no_k_fold, reponsible for reading data, training model, evaluating model, predicting, and reporting results without k fold validation (K=1).
+* Func. of k_fold_validaiton, reponsible for reading data, training model, evaluating model, predicting, and reporting results with k fold validation. 
+* Func. of configuration for recording experimental setting.
+* Func. of main, reponsible for taking appropriate actions from the flags which is set in `run_svc.sh`.
 
 ---
 ## Run program with grid search with k fold validation
