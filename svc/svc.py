@@ -48,10 +48,10 @@ class DataReader():
         return test_data, test_x, test_y
 
 class SVC():
-    def __init__(self, c, gamma):
-        self.c = c
+    def __init__(self, C, gamma):
+        self.C = C
         self.gamma = gamma      
-        self.svc = SupportVectorClassification(C=c, gamma=gamma)
+        self.svc = SupportVectorClassification(C=C, gamma=gamma)
         
     def train(self, data_x, data_y): 
         return self.svc.fit(data_x, data_y) 
@@ -190,22 +190,9 @@ def k_fold_validation(datareader, svc, output_dir):
     with pd.ExcelWriter(output_dir+'/result.xlsx') as writer:           
         result.to_excel(writer, sheet_name='accuracy_report') 
     
-    return result.loc[i+1,'train'], result.loc[i+1,'valid'], result.loc[i+1,'test']
-                  
-def configuration(args):
-    config = {
-        'data_dir': args.data_dir,
-        'train_valid_file': args.train_valid_file,
-        'test_file': args.test_file,
-        'feature_input': args.feature_in,
-        'output_column': args.output_col,
-        'is_shuffle': args.is_shuffle,
-        'k_fold': args.k_fold,  
-        'c': args.c,
-        'gamma': args.gamma}        
-    return config
+    return result.loc[i+1,'train'], result.loc[i+1,'valid'], result.loc[i+1,'test']                  
 
-def configuration_grid_search(datareader, svc):
+def configuration(datareader, svc):
     config = {
         'data_dir': datareader.data_dir,
         'train_valid_file': datareader.train_valid_file,
@@ -214,7 +201,7 @@ def configuration_grid_search(datareader, svc):
         'output_column': datareader.output_col,
         'is_shuffle': True,
         'k_fold': datareader.k_fold,  
-        'c': svc.c,
+        'C': svc.C,
         'gamma': svc.gamma}        
     return config
 
@@ -261,7 +248,7 @@ def main():
                         required=True,
                         help='k fold validation')
     
-    parser.add_argument('--c',
+    parser.add_argument('--C',
                         type=float,
                         required=True,
                         help='penalty param.')
@@ -280,11 +267,7 @@ def main():
         raise ValueError('k fold must equal or be greater than 1.')   
     
     if len(args.feature_in) < 1:
-        raise ValueError('len of feature must equal or be greater than 1.')
-    
-    config = configuration(args)
-    with open(args.output_dir+'/config.json', 'w') as fout:
-        json.dump(config, fout, indent = 4)
+        raise ValueError('len of feature must equal or be greater than 1.')        
     
     datareader = DataReader(data_dir = args.data_dir,
                             train_valid_file = args.train_valid_file,                    
@@ -293,13 +276,17 @@ def main():
                             output_col = args.output_col,
                             k_fold = args.k_fold)
         
-    svc = SVC(c = args.c,
+    svc = SVC(C = args.C,
               gamma = args.gamma)
             
     if args.k_fold == 1:                
         no_k_fold(datareader, svc, args.output_dir)    
     elif args.k_fold > 1:
-        k_fold_validation(datareader, svc, args.output_dir)       
+        k_fold_validation(datareader, svc, args.output_dir)  
+    
+    config = configuration(datareader, svc)
+    with open(args.output_dir+'/config.json', 'w') as fout:
+        json.dump(config, fout, indent = 4)
         
 if __name__ == '__main__':    
     main()
